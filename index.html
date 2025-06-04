@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rekap Data Penerima Bantuan Bulukumba</title>
+  <style>
+    :root {
+      --primary-color: #1e40af;
+      --secondary-color: #facc15;
+      --bg-color: #f9fafb;
+      --text-color: #1f2937;
+      --border-color: #d1d5db;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 40px;
+    }
+
+    h2 {
+      color: var(--primary-color);
+      margin-bottom: 20px;
+    }
+
+    select {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      margin-right: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background-color: var(--primary-color);
+      color: white;
+      text-align: left;
+    }
+
+    tr:hover {
+      background-color: #e0f2fe;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Rekap Data Penerima Bantuan - Bulukumba</h2>
+
+<label for="filterBulan">Filter Bulan:</label>
+<select id="filterBulan" onchange="filterTable()">
+  <option value="">Semua Bulan</option>
+  <option value="Januari">Januari</option>
+  <option value="Februari">Februari</option>
+</select>
+
+<label for="filterKecamatan">Filter Kecamatan:</label>
+<select id="filterKecamatan" onchange="filterTable()">
+  <option value="">Semua Kecamatan</option>
+  <option value="Gantarang">Gantarang</option>
+  <option value="Kindang">Kindang</option>
+</select>
+
+<table id="dataTabel">
+  <thead>
+    <tr>
+      <th>Bulan</th>
+      <th>Kecamatan</th>
+      <th>Desa/Kelurahan</th>
+      <th>Nama Penerima</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Januari</td>
+      <td>Gantarang</td>
+      <td>Bialo</td>
+      <td>Ahmad Taufik</td>
+    </tr>
+    <tr>
+      <td>Februari</td>
+      <td>Kindang</td>
+      <td>Bonto Sunggu</td>
+      <td>Nur Aini</td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+function filterTable() {
+  const bulan = document.getElementById("filterBulan").value.toLowerCase();
+  const kecamatan = document.getElementById("filterKecamatan").value.toLowerCase();
+  const rows = document.querySelectorAll("#dataTabel tbody tr");
+
+  rows.forEach(row => {
+    const tdBulan = row.cells[0].textContent.toLowerCase();
+    const tdKecamatan = row.cells[1].textContent.toLowerCase();
+
+    const matchBulan = !bulan || tdBulan.includes(bulan);
+    const matchKecamatan = !kecamatan || tdKecamatan.includes(kecamatan);
+
+    row.style.display = matchBulan && matchKecamatan ? "" : "none";
+  });
+}
+</script>
+
+</body>
+</html>
