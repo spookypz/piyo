@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Rekap Data Penerima Bantuan Bulukumba</title>
+  <title>Rekap Data Bina Keluarga Balita Bulukumba</title>
   <style>
     :root {
       --primary-color: #1e40af;
@@ -18,6 +18,8 @@
       background-color: var(--bg-color);
       color: var(--text-color);
       padding: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     h2 {
@@ -25,11 +27,25 @@
       margin-bottom: 20px;
     }
 
-    select {
+    select, input {
       padding: 8px 12px;
       border-radius: 8px;
       border: 1px solid var(--border-color);
       margin-right: 10px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 8px 16px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
     }
 
     table {
@@ -56,26 +72,104 @@
     tr:hover {
       background-color: #e0f2fe;
     }
+
+    .input-form {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
 
-<h2>Rekap Data Penerima Bantuan - Bulukumba</h2>
+<h2>Rekap Bina Keluarga Balita - Bulukumba</h2>
 
+<!-- Form Input Data -->
+<div class="input-form">
+  <h3>Tambah Data Baru</h3>
+  <form id="inputForm">
+    <div class="form-group">
+      <label for="inputBulan">Bulan</label>
+      <select id="inputBulan" required>
+        <option value="">Pilih Bulan</option>
+        <option value="Januari">Januari</option>
+        <option value="Februari">Februari</option>
+        <option value="Maret">Maret</option>
+        <option value="April">April</option>
+        <option value="Mei">Mei</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="inputKecamatan">Kecamatan</label>
+      <select id="inputKecamatan" required>
+        <option value="">Pilih Kecamatan</option>
+        <option value="Ujung Bulu">Ujung Bulu</option>
+        <option value="Gantarang">Gantarang</option>
+        <option value="Kindang">Kindang</option>
+        <option value="Bulukumpa">Bulukumpa</option>
+        <option value="Bonto Bahari">Bonto Bahari</option>
+        <option value="Bontotiro">Bontotiro</option>
+        <option value="Herlang">Herlang</option>
+        <option value="Kajang">Kajang</option>
+        <option value="Rilau Ale">Rilau Ale</option>
+        <option value="Ujung Loe">Ujung Loe</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="inputDesa">Desa/Kelurahan</label>
+      <input type="text" id="inputDesa" placeholder="Contoh: Bialo" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="inputNama">Nama Penerima</label>
+      <input type="text" id="inputNama" placeholder="Contoh: Ahmad Taufik" required>
+    </div>
+    
+    <button type="submit">Simpan Data</button>
+  </form>
+</div>
+
+<!-- Filter Data -->
 <label for="filterBulan">Filter Bulan:</label>
 <select id="filterBulan" onchange="filterTable()">
   <option value="">Semua Bulan</option>
   <option value="Januari">Januari</option>
   <option value="Februari">Februari</option>
+  <option value="Maret">Maret</option>
+  <option value="April">April</option>
+  <option value="Mei">Mei</option>
 </select>
 
 <label for="filterKecamatan">Filter Kecamatan:</label>
 <select id="filterKecamatan" onchange="filterTable()">
   <option value="">Semua Kecamatan</option>
+  <option value="Ujung Bulu">Ujung Bulu</option>
   <option value="Gantarang">Gantarang</option>
   <option value="Kindang">Kindang</option>
+  <option value="Bulukumpa">Bulukumpa</option>
+  <option value="Bonto Bahari">Bonto Bahari</option>
+  <option value="Bontotiro">Bontotiro</option>
+  <option value="Herlang">Herlang</option>
+  <option value="Kajang">Kajang</option>
+  <option value="Rilau Ale">Rilau Ale</option>
+  <option value="Ujung Loe">Ujung Loe</option>
 </select>
 
+<!-- Tabel Data -->
 <table id="dataTabel">
   <thead>
     <tr>
@@ -83,25 +177,56 @@
       <th>Kecamatan</th>
       <th>Desa/Kelurahan</th>
       <th>Nama Penerima</th>
+      <th>Aksi</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Januari</td>
-      <td>Gantarang</td>
-      <td>Bialo</td>
-      <td>Ahmad Taufik</td>
-    </tr>
-    <tr>
-      <td>Februari</td>
-      <td>Kindang</td>
-      <td>Bonto Sunggu</td>
-      <td>Nur Aini</td>
-    </tr>
+    <!-- Data akan diisi oleh JavaScript -->
   </tbody>
 </table>
 
 <script>
+// URL Google Sheets Anda (format CSV)
+// GANTI DENGAN LINK ANDA SENDIRI
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThTrUxEHQtPqAI-oXRiRgXXvMqET428fkd0lWU_423uOeBQwaB_sC2KqQl-kWcYTYY-jmLHbrUOfGi/pub?gid=0&single=true&output=csv";
+
+// Simpan data sementara
+let allData = [];
+
+// Fungsi memuat data dari Google Sheets
+async function loadData() {
+  try {
+    const response = await fetch(sheetURL);
+    const csvData = await response.text();
+    const rows = csvData.split('\n').slice(1); // Abaikan header
+    
+    allData = [];
+    const tableBody = document.querySelector("#dataTabel tbody");
+    tableBody.innerHTML = "";
+
+    rows.forEach(row => {
+      const [bulan, kecamatan, desa, nama] = row.split(",");
+      if (!bulan) return;
+
+      allData.push({ bulan, kecamatan, desa, nama });
+      
+      tableBody.innerHTML += `
+        <tr>
+          <td>${bulan}</td>
+          <td>${kecamatan}</td>
+          <td>${desa}</td>
+          <td>${nama}</td>
+          <td><button onclick="deleteData('${bulan}', '${kecamatan}', '${desa}', '${nama}')">Hapus</button></td>
+        </tr>
+      `;
+    });
+  } catch (error) {
+    console.error("Gagal memuat data:", error);
+    alert("Gagal memuat data. Silakan coba lagi.");
+  }
+}
+
+// Fungsi filter tabel
 function filterTable() {
   const bulan = document.getElementById("filterBulan").value.toLowerCase();
   const kecamatan = document.getElementById("filterKecamatan").value.toLowerCase();
@@ -117,7 +242,70 @@ function filterTable() {
     row.style.display = matchBulan && matchKecamatan ? "" : "none";
   });
 }
+
+// Fungsi untuk menambah data (simulasi)
+document.getElementById("inputForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  
+  const newData = {
+    bulan: document.getElementById("inputBulan").value,
+    kecamatan: document.getElementById("inputKecamatan").value,
+    desa: document.getElementById("inputDesa").value,
+    nama: document.getElementById("inputNama").value
+  };
+
+  // Simpan ke Google Sheets (simulasi)
+  try {
+    // DI SINI ANDA PERLU MENGHUBUNGKAN DENGAN GOOGLE APPS SCRIPT
+    // Contoh simulasi:
+    allData.push(newData);
+    updateTable();
+    
+    alert("Data berhasil disimpan!");
+    document.getElementById("inputForm").reset();
+  } catch (error) {
+    console.error("Gagal menyimpan:", error);
+    alert("Gagal menyimpan data. Silakan coba lagi.");
+  }
+});
+
+// Fungsi update tabel dari data lokal
+function updateTable() {
+  const tableBody = document.querySelector("#dataTabel tbody");
+  tableBody.innerHTML = "";
+
+  allData.forEach(data => {
+    tableBody.innerHTML += `
+      <tr>
+        <td>${data.bulan}</td>
+        <td>${data.kecamatan}</td>
+        <td>${data.desa}</td>
+        <td>${data.nama}</td>
+        <td><button onclick="deleteData('${data.bulan}', '${data.kecamatan}', '${data.desa}', '${data.nama}')">Hapus</button></td>
+      </tr>
+    `;
+  });
+}
+
+// Fungsi hapus data (simulasi)
+function deleteData(bulan, kecamatan, desa, nama) {
+  if (confirm(`Hapus data ${nama} dari ${desa}?`)) {
+    allData = allData.filter(item => 
+      !(item.bulan === bulan && 
+        item.kecamatan === kecamatan && 
+        item.desa === desa && 
+        item.nama === nama)
+    );
+    updateTable();
+    alert("Data dihapus!");
+  }
+}
+
+// Muat data saat halaman dimuat
+window.onload = loadData;
 </script>
 
+<!-- Tambahkan ini sebelum tag </body> -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
